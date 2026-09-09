@@ -313,8 +313,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
            onload="this.previousElementSibling.style.display='none'"
            onerror="this.style.display='none'">
       <div id="boardTitle">
-        <div class="chalkMain">مّ</div>
-        <div class="chalkText">مّ\u003Cdiv class=\"mfArabic\">مّ\u003C/div>\u003Cdiv class=\"mfArabic\">مّ\u003C/div></div>
+        <div class="chalkMain"></div>
+        <div class="chalkText"></div>
         <div class="chalkSub">Mim bertasydid dibaca dengung (ghunnah)</div>
       </div>
     </div>
@@ -430,7 +430,7 @@ sendBtn.addEventListener('click',async()=>{
 
   try{
     await kirimDataSiswa(namaSiswa,window.lastRecordingBlob);
-    recordMsg.textContent='✅ Rekaman sudah dikirim. Silakan cek folder Google Drive.';
+    recordMsg.textContent='✅ Rekaman sudah dikirim.';
     sendBtn.textContent='✅ Terkirim';
   }catch(err){
     console.error('Upload error:',err);
