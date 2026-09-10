@@ -15,13 +15,13 @@
   --ease:cubic-bezier(.22,.8,.32,1)
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--navy);background:#dfe9e3}
+html,body{margin:0;width:100%;min-height:100%;overflow-x:hidden;overflow-y:auto;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--navy);background:#dfe9e3}
 h1,.brandFont,#boardHeader,#greeting,#touchLabel,.start,#boardTitle{font-family:'Poppins',system-ui,sans-serif}
 button,input{font:inherit}button{border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 
-#app{position:relative;width:100%;height:100%;overflow:hidden;background:#dfe9e3}
+#app{position:relative;width:100%;height:100%;min-height:100vh;overflow:visible;background:#dfe9e3}
 #room{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,var(--wall1) 0 62%,var(--wall2) 62% 69%,var(--floor) 69% 100%)}
 #room:before{content:"";position:absolute;left:0;right:0;top:69%;height:2px;background:rgba(101,72,44,.18);box-shadow:0 10px 0 rgba(255,255,255,.16)}
 #room:after{content:"";position:absolute;left:0;right:0;bottom:0;height:31%;background:repeating-linear-gradient(168deg,transparent 0 74px,rgba(122,84,48,.10) 75px 78px);pointer-events:none}
@@ -80,6 +80,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 #scene.focus .teacherFallback{opacity:1}
 .teacher.img-missing{width:min(30vw,190px);height:auto;aspect-ratio:3/5;border-radius:18px 18px 4px 4px;background:linear-gradient(160deg,#c9d8d0,#a9bdb2);display:flex;align-items:flex-end;justify-content:center;filter:none}
 .teacher.img-missing:after{content:attr(data-fallback-label);position:absolute;bottom:8px;left:50%;transform:translateX(-50%);color:#3c4a44;font-size:.7rem;font-weight:800;background:rgba(255,255,255,.75);padding:4px 9px;border-radius:999px;white-space:nowrap}
+
+#skipBtn{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:1000;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 8px 20px rgba(0,0,0,.2);font-size:22px;display:grid;place-items:center;cursor:pointer;}
+#skipBtn:active{transform:scale(.92)}
+@media(max-width:420px){#skipBtn{top:calc(10px + env(safe-area-inset-top,0px));right:10px;width:42px;height:42px;font-size:20px}}
 
 #topStack{position:absolute;top:calc(4.2% + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:20;width:min(92vw,760px);display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
 #greeting{text-align:center;color:var(--navy);font-size:clamp(1rem,3.6vw,1.7rem);font-weight:800;opacity:0;transform:translateY(-6px);transition:opacity .7s,transform .7s;text-shadow:0 2px 0 rgba(255,255,255,.8)}
@@ -141,6 +145,12 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 @keyframes hintPulse{0%,100%{opacity:1}50%{opacity:.6}}@keyframes cardHover{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-7px)}}
 
 @media(max-width:700px){
+  /* HP: halaman dibuat sedikit lebih tinggi agar bisa digeser atas-bawah.
+     Tombol rekam/kirim tetap di posisi aslinya, tidak dipaksa naik. */
+  html,body{overflow-x:hidden;overflow-y:auto;}
+  #app{height:115vh;min-height:115vh;overflow:visible;}
+  #room,#scene{height:100%;min-height:115vh;}
+
   #boardFrame{top:13%;width:90vw;height:42vh;padding:10px 10px 20px;border-radius:13px}
   #boardSurface{border-width:6px}#boardHeader{font-size:.62rem;padding:7px 14px}
   #boardMaterial{top:40%;width:32vw;max-width:180px;border-width:5px}
@@ -323,6 +333,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
     <div id="caption"></div>
   </div>
 
+  <button id="skipBtn" type="button" aria-label="Lewati">⏭️</button>
+
   <div id="topStack">
     <div id="greeting"></div>
     <div id="status">Siap belajar</div>
@@ -366,6 +378,9 @@ const touchCard=document.getElementById('touchCard'),recordBtn=document.getEleme
 let index=0,namaSiswa='',recorder=null,chunks=[];
 function syncStartBtn(){startBtn.disabled=studentName.value.trim().length<3}
 studentName.addEventListener('input',syncStartBtn);studentName.addEventListener('keyup',syncStartBtn);studentName.addEventListener('change',syncStartBtn);studentName.addEventListener('blur',syncStartBtn);setInterval(syncStartBtn,400);syncStartBtn();
+skipBtn.addEventListener('click',()=>{
+  if(index < audios.length-1){ startAudio(index+1); } else { finishLesson(); }
+});
 nameForm.addEventListener('submit',async e=>{e.preventDefault();namaSiswa=studentName.value.trim();nameOverlay.classList.add('hidden');greeting.textContent=`Selamat belajar, ${namaSiswa}!`;setTimeout(()=>greeting.classList.add('show'),450);status.textContent='Pembukaan';await startAudio(0)});
 function setSpeaking(on){ustad.classList.toggle('speaking',on)}
 async function startAudio(i){
