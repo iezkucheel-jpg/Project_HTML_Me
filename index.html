@@ -115,7 +115,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
 #afterLesson.zoomed{background:rgba(15,33,45,.92)}#afterLesson.zoomed #touchCard{top:44%;width:min(88vw,650px);transform:translate(-50%,-50%);animation:none}
 #afterLesson.zoomed #touchCard img{box-shadow:0 20px 55px rgba(0,0,0,.48)}#afterLesson.zoomed #touchLabel{background:var(--gold);color:#3c2d13}
 #recordBox{position:absolute;left:50%;bottom:calc(8% + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:11px;pointer-events:auto;opacity:0;transition:opacity .45s .1s,transform .45s .1s;transform:translateX(-50%) translateY(10px);width:max-content;max-width:92vw}
-#afterLesson.zoomed #recordBox{opacity:1;transform:translateX(-50%) translateY(0)}
+#afterLesson.zoomed #recordBox{opacity:1;top:calc(44% + 34vw + 12px);bottom:auto;transform:translateX(-50%) translateY(0)}
 #recordBtn{width:64px;height:64px;border-radius:50%;background:linear-gradient(150deg,#d24c4c,#b93131);color:#fff;box-shadow:0 10px 25px rgba(0,0,0,.28);font-size:28px;transition:transform .15s}
 #recordBtn:hover{transform:scale(1.05)}#recordBtn:active{transform:scale(.92)}#recordBtn.recording{background:linear-gradient(150deg,#2f9c70,#25815d);animation:pulse 1s infinite}
 #recordMsg{background:#fff;padding:10px 14px;border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.18);font-weight:700;font-size:.78rem;max-width:52vw}
@@ -161,6 +161,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-o
   #status{font-size:.68rem}#topStack{gap:6px}#afterLesson.zoomed #touchCard{width:90vw;top:40%}
   #recordMsg{max-width:60vw;font-size:.72rem}
   #recordBox{gap:8px;flex-wrap:wrap;justify-content:center}
+  #afterLesson.zoomed #recordBox{top:calc(40% + 34vw + 12px);max-width:94vw}
   #sendBtn{min-height:52px;padding:0 13px;font-size:.75rem}
 
   #boardTitle{bottom:8px;width:92%}
